@@ -1,2 +1,5 @@
-<h1>{{title}}</h1>
-<p>Welcome to {{title}}</p>
+<ul>
+  {{#each result}}
+    <li>{{this._id}} {{this.avgTime}}</li> 
+  {{/each}}
+</ul>

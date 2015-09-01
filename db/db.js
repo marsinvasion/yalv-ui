@@ -9,16 +9,22 @@ MongoClient.connect(url, function(err, mydb) {
   db = mydb;
 });
 
-module.exports = {
  
- getLogs:function(log, callback){
+
+var agg = function(aggBy,callback,arg){
 
    var logCollection = db.collection('logs');
+   logCollection.aggregate([{ $group:{ _id:aggBy, avgTime:{$avg:"$timeElapsed"}}}],function(err,result){
+     if(err) return callback(err,null,null);
+     callback(null,result,arg);
+   })
+};
+   
+var aggRequest = function(callback,arg){
+    agg("$request",callback,arg);
+}
 
-   logCollection.findOne(function(err,result){
-     if(err) return callback(err,null);
-     callback(null,result);
-   });
- }
-
+module.exports = {
+  agg: agg,
+  aggRequest:aggRequest
 }
