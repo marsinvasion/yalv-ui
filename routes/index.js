@@ -29,7 +29,7 @@ router.get('/', function(req, res, next) {
       util.log(err);
       return res.status(500).end();
     }
-    res.render('index', { title: 'view logs', reqAgg:results.reqAgg, all:results.all,host:results.host,api:results.api,func:results.func });
+    res.render('index', { title: 'view logs', reqAgg:JSON.stringify(results.reqAgg), all:results.all,host:results.host,api:results.api,func:results.func });
   });
 });
 

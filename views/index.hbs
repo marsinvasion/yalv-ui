@@ -1,3 +1,7 @@
+<div class="row">
+  <div id="reqChart" class="col-md-6">
+    <svg></svg>
+  </div>
 <ul>
   {{#each reqAgg}}
     <li>{{this._id}} {{this.avgTime}}</li> 
@@ -8,6 +12,7 @@
     <li>{{this._id}} {{this.avgTime}}</li> 
   {{/each}}
 </ul>
+</div>
 <ul>
   {{#each api}}
     <li>{{this._id}} {{this.avgTime}}</li> 
@@ -23,3 +28,31 @@
     <li>{{this.request}} {{this.api}} {{this.func}} {{this.os.hostname}} {{this.os.type}} {{this.os.loadAverage}} {{this.os.freeMemory}} {{this.os.memoryUsed}} {{this.timeElapsed}} {{this.time}}</li> 
   {{/each}}
 </ul>
+
+<script>
+
+  var requestChart = [{
+    key: "By Request",
+    values: {{{reqAgg}}}
+  }];
+ 
+  nv.addGraph(function(){
+
+    var chart = nv.models.discreteBarChart()
+      .x(function(d) { return d._id })
+      .y(function(d) { return d.avgTime })
+      .staggerLabels(true)
+      .showValues(true)
+      .duration(250)
+      ;
+
+    d3.select('#reqChart svg')
+      .datum(requestChart)
+      .call(chart);
+
+    nv.utils.windowResize(chart.update);
+    return chart;
+
+  });
+
+</script>
