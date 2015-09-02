@@ -12,8 +12,9 @@ MongoClient.connect(url, function(err, mydb) {
  
 
 var agg = function(aggBy,callback){
-
-   logCollection.aggregate([{ $group:{ _id:aggBy, avgTime:{$avg:"$timeElapsed"}}}],function(err,result){
+  var date = new Date();
+  date.setDate(date.getDate()-2);
+   logCollection.aggregate([{$match:{time:{$gt:date.toISOString()}}},{ $group:{ _id:aggBy, avgTime:{$avg:"$timeElapsed"}}}],{allowDisUser:true},function(err,result){
      if(err) return callback(err,null);
      callback(null,result);
    })
@@ -24,7 +25,9 @@ var aggRequest = function(callback){
 }
 
 var list = function(callback){
-  logCollection.find().toArray(function(err,result){
+  var date = new Date();
+  date.setDate(date.getDate()-2);
+  logCollection.find({time:{$gt:date.toISOString()}}).toArray(function(err,result){
     if(err) return callback(err,null);
     callback(null,result);
   });
