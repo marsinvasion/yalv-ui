@@ -12,6 +12,15 @@ router.get('/', function(req, res, next) {
     },
     all: function(callback){
       db.list(callback);
+    },
+    host: function(callback){
+      db.aggHost(callback);
+    },
+    api: function(callback){
+      db.aggApi(callback);
+    },
+    func: function(callback){
+      db.aggFunc(callback);
     }
   },
   function(err, results){
@@ -20,7 +29,7 @@ router.get('/', function(req, res, next) {
       util.log(err);
       return res.status(500).end();
     }
-    res.render('index', { title: 'view logs', reqAgg:results.reqAgg, all:results.all });
+    res.render('index', { title: 'view logs', reqAgg:results.reqAgg, all:results.all,host:results.host,api:results.api,func:results.func });
   });
 });
 

@@ -27,14 +27,29 @@ var aggRequest = function(callback){
 var list = function(callback){
   var date = new Date();
   date.setDate(date.getDate()-2);
-  logCollection.find({time:{$gt:date.toISOString()}}).toArray(function(err,result){
+  logCollection.find({time:{$gt:date.toISOString()}}).sort({_id:-1}).toArray(function(err,result){
     if(err) return callback(err,null);
     callback(null,result);
   });
 }
 
+var aggHost = function(callback){
+  agg("$os.hostname",callback);
+}
+
+var aggApi = function(callback){
+  agg("$api",callback);
+}
+
+var aggFunc = function(callback){
+  agg("$func",callback);
+}
+
 module.exports = {
   agg: agg,
   aggRequest:aggRequest,
-  list: list
+  list: list,
+  aggHost:aggHost,
+  aggApi:aggApi,
+  aggFunc:aggFunc
 }

@@ -4,7 +4,22 @@
   {{/each}}
 </ul>
 <ul>
+  {{#each host}}
+    <li>{{this._id}} {{this.avgTime}}</li> 
+  {{/each}}
+</ul>
+<ul>
+  {{#each api}}
+    <li>{{this._id}} {{this.avgTime}}</li> 
+  {{/each}}
+</ul>
+<ul>
+  {{#each func}}
+    <li>{{this._id}} {{this.avgTime}}</li> 
+  {{/each}}
+</ul>
+<ul>
   {{#each all}}
-    <li>{{this.request}} {{this.api}} {{this.func}} {{this.os.hostname}} {{this.os.type}} {{this.loadAverage}} {{this.freeMemory}} {{this.timeElapsed}}</li> 
+    <li>{{this.request}} {{this.api}} {{this.func}} {{this.os.hostname}} {{this.os.type}} {{this.os.loadAverage}} {{this.os.freeMemory}} {{this.os.memoryUsed}} {{this.timeElapsed}} {{this.time}}</li> 
   {{/each}}
 </ul>
