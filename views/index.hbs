@@ -1,5 +1,10 @@
 <ul>
-  {{#each result}}
+  {{#each reqAgg}}
     <li>{{this._id}} {{this.avgTime}}</li> 
+  {{/each}}
+</ul>
+<ul>
+  {{#each all}}
+    <li>{{this.request}} {{this.api}} {{this.func}} {{this.os.hostname}} {{this.os.type}} {{this.loadAverage}} {{this.freeMemory}} {{this.timeElapsed}}</li> 
   {{/each}}
 </ul>

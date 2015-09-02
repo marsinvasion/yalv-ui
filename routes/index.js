@@ -2,19 +2,27 @@ var express = require('express');
 var router = express.Router();
 var db = require('../db/db.js');
 var util = require('util');
+var async = require('async');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  db.aggRequest(indexCallback,res);
+  async.parallel({
+    reqAgg: function(callback){
+      db.aggRequest(callback);
+    },
+    all: function(callback){
+      db.list(callback);
+    }
+  },
+  function(err, results){
+    debugger;
+    if(err){
+      util.log(err);
+      return res.status(500).end();
+    }
+    res.render('index', { title: 'view logs', reqAgg:results.reqAgg, all:results.all });
+  });
 });
 
-var indexCallback = function(err,result,res){
-  if(err){
-    util.log(err);
-    return res.status(500).end();
-  }
-  util.log(result);
-  res.render('index', { title: 'view logs', result:result });
-}
 
 module.exports = router;
