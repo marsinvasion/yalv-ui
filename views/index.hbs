@@ -1,11 +1,26 @@
 <div class="row">
   <div id="reqChart" class="col-md-6">
+  <h2> Average response time per request </h2>
+  </div>
+  <div id="reqChart" class="col-md-6">
+  <h2> Average response time per host </h2>
+  </div>
+</div>
+<div class="row">
+  <div id="reqChart" class="col-md-6">
     <svg></svg>
   </div>
   <div id="hostChart" class="col-md-6">
     <svg></svg>
   </div>
-<ul>
+</div>
+<div class="row">
+  <div id="reqChart" class="col-md-6">
+  <h2> Average response time per api </h2>
+  </div>
+  <div id="reqChart" class="col-md-6">
+  <h2> Average response time per service </h2>
+  </div>
 </div>
 <div class="row">
   <div id="apiChart" class="col-md-6">
@@ -14,10 +29,10 @@
   <div id="serviceChart" class="col-md-6">
     <svg></svg>
   </div>
-<ul>
 </div>
 
 <div class="row">
+  <h2> All requests </h2>
   <div id="allChart">
     <svg></svg>
   </div>
@@ -26,27 +41,19 @@
 <script>
 
 
-var barChart = function(xAxisLabel,yAxisLabel, svgDiv, data){
+var barChart = function(yAxisLabel, svgDiv, data){
   nv.addGraph(function(){
     var chart = nv.models.multiBarChart()
-             .x(function(d) { return d._id })
-             .y(function(d) { return d.avgTime })
              .duration(350)
 	     .rotateLabels(45)
 	     .margin({bottom:100, left: 70})
 	     .groupSpacing(0.1)
 	     ;
     chart.reduceXTicks(false).staggerLabels(true);
-    chart.xAxis
-         .axisLabel(xAxisLabel)
-	 .axisLabelDistance(35)
-	 .showMaxMin(false)
-	 .tickFormat(d3.format(',.6f'))
-	 ;
 
     chart.yAxis
          .axisLabel(yAxisLabel)
-	 .axisLabelDistance(-5)
+	 .axisLabelDistance(5)
 	 .tickFormat(d3.format(',.01f'))
 	 ;
 
@@ -64,25 +71,25 @@ var barChart = function(xAxisLabel,yAxisLabel, svgDiv, data){
     key: "By Request",
     values: {{{reqAgg}}}
   }];
-  barChart("By Request", "Average Time", '#reqChart svg', requestChart);
+  barChart("Average Time", '#reqChart svg', requestChart);
   requestChart = [{
     key: "By host",
     values: {{{host}}}
   }];
-  barChart("By Host", "Average Time", '#hostChart svg', requestChart);
+  barChart("Average Time", '#hostChart svg', requestChart);
   requestChart = [{
     key: "By Api",
     values: {{{api}}}
   }];
-  barChart("By Api", "Average Time", '#apiChart svg', requestChart);
+  barChart("Average Time", '#apiChart svg', requestChart);
   requestChart = [{
     key: "By Service",
     values: {{{service}}}
   }];
-  barChart("By Service", "Average Time", '#serviceChart svg', requestChart);
+  barChart("Average Time", '#serviceChart svg', requestChart);
   requestChart = [{
     key: "All Requests",
     values: {{{all}}}
   }];
-  barChart("All requests", "Average Time", '#allChart svg', requestChart);
+  barChart("Average Time", '#allChart svg', requestChart);
 </script>

@@ -16,7 +16,14 @@ var agg = function(aggBy,callback){
   date.setDate(date.getDate()-2);
    logCollection.aggregate([{$match:{time:{$gt:date.toISOString()}}},{ $group:{ _id:aggBy, avgTime:{$avg:"$timeElapsed"}}}],{allowDisUser:true},function(err,result){
      if(err) return callback(err,null);
-     callback(null,result);
+    var all = [];
+    for(var i=0;i<result.length;i++){
+      var obj = {};
+      obj.x = result[i]._id;
+      obj.y = result[i].avgTime;
+      all.push(obj);
+    }
+    callback(null,all);
    })
 };
    
@@ -33,7 +40,7 @@ var list = function(callback){
     for(var i=0;i<result.length;i++){
       var obj = {};
       obj.x = result[i].request;
-      obj.y = result[i].timeElapsed
+      obj.y = result[i].timeElapsed;
       all.push(obj);
     }
     callback(null,all);
