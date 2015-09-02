@@ -29,7 +29,14 @@ var list = function(callback){
   date.setDate(date.getDate()-2);
   logCollection.find({time:{$gt:date.toISOString()}}).sort({_id:-1}).toArray(function(err,result){
     if(err) return callback(err,null);
-    callback(null,result);
+    var all = [];
+    for(var i=0;i<result.length;i++){
+      var obj = {};
+      obj.x = result[i].request;
+      obj.y = result[i].timeElapsed
+      all.push(obj);
+    }
+    callback(null,all);
   });
 }
 
