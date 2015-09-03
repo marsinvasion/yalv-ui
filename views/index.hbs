@@ -76,7 +76,7 @@ var multiChart = function(svgDiv, data, ht){
   chart.setBounds(60,20,680,330);
   var x = chart.addCategoryAxis("x", "time");
   var y1 = chart.addMeasureAxis("y", "timeElapsed");
-  var y2 = chart.addMeasureAxis("y", "os.memoryUsed");
+  var y2 = chart.addMeasureAxis("y", "memoryUsed");
   var bars = chart.addSeries("Time taken", dimple.plot.bar, [x,y1]);
   var lines = chart.addSeries("Memory Used", dimple.plot.line, [x,y2]);
   lines.lineMarkers = true;
