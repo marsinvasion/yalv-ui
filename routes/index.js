@@ -29,7 +29,8 @@ router.get('/', function(req, res, next) {
       util.log(err);
       return res.status(500).end();
     }
-    res.render('index', { title: 'view logs', reqAgg:JSON.stringify(results.reqAgg), all:JSON.stringify(results.all),host:JSON.stringify(results.host),api:JSON.stringify(results.api),service:JSON.stringify(results.func) });
+    debugger;
+    res.render('index', { title: 'view logs', reqAgg:JSON.stringify(results.reqAgg), all:JSON.stringify(results.all), host:JSON.stringify(results.host),api:JSON.stringify(results.api),service:JSON.stringify(results.func) });
   });
 });
 

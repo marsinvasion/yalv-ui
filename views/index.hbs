@@ -34,7 +34,6 @@
 <div class="row">
   <h2> All requests </h2>
   <div id="allChart" class="height700">
-    <svg></svg>
   </div>
 </div>
 <script>
@@ -71,6 +70,20 @@ var barChart = function(yAxisLabel, svgDiv, data,ht){
 
   });
 }
+var multiChart = function(svgDiv, data, ht){
+  var svg = dimple.newSvg(svgDiv, 800, 400);
+  var chart = new dimple.chart(svg, data);
+  chart.setBounds(60,20,680,330);
+  var x = chart.addCategoryAxis("x", "time");
+  var y1 = chart.addMeasureAxis("y", "timeElapsed");
+  var y2 = chart.addMeasureAxis("y", "os.memoryUsed");
+  var bars = chart.addSeries("Time taken", dimple.plot.bar, [x,y1]);
+  var lines = chart.addSeries("Memory Used", dimple.plot.line, [x,y2]);
+  lines.lineMarkers = true;
+  bars.barGap = 0.5;
+  chart.addLegend(60, 5, 680, 10, "right", lines);
+  chart.draw();
+}
 
   var requestChart = [{
     key: "By Request",
@@ -92,9 +105,6 @@ var barChart = function(yAxisLabel, svgDiv, data,ht){
     values: {{{service}}}
   }];
   barChart("Average Time", '#serviceChart svg', requestChart);
-  requestChart = [{
-    key: "All Requests",
-    values: {{{all}}}
-  }];
-  barChart("Average Time", '#allChart svg', requestChart, 600);
+  var allValues = {{{all}}};
+  multiChart('#allChart', allValues);
 </script>
