@@ -34,7 +34,7 @@ var aggRequest = function(callback){
 var list = function(callback){
   var date = new Date();
   date.setDate(date.getDate()-2);
-  logCollection.find({time:{$gt:date.toISOString()}}).sort({_id:-1}).toArray(function(err,result){
+  logCollection.find({time:{$gt:date.toISOString()}}).sort({_id:1}).toArray(function(err,result){
     if(err) return callback(err,null);
     var all = [];
     for(var i=0;i<result.length;i++){

@@ -33,21 +33,22 @@
 
 <div class="row">
   <h2> All requests </h2>
-  <div id="allChart" class="height500">
+  <div id="allChart" class="height700">
     <svg></svg>
   </div>
 </div>
 <script>
 
 
-var barChart = function(yAxisLabel, svgDiv, data){
+var barChart = function(yAxisLabel, svgDiv, data,ht){
+  var height = ht || 400;
   nv.addGraph(function(){
     var chart = nv.models.multiBarChart()
              .duration(350)
 	     .rotateLabels(90)
 	     .margin({bottom:200, left: 70})
 	     .groupSpacing(0.1)
-	     .height(400)
+	     .height(height)
 	     ;
     chart.reduceXTicks(false).staggerLabels(true);
 
@@ -95,5 +96,5 @@ var barChart = function(yAxisLabel, svgDiv, data){
     key: "All Requests",
     values: {{{all}}}
   }];
-  barChart("Average Time", '#allChart svg', requestChart);
+  barChart("Average Time", '#allChart svg', requestChart, 600);
 </script>
