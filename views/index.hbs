@@ -1,3 +1,4 @@
+{{#if all}}
 <div class="row">
   <div id="reqChart" class="col-md-6">
   <h2> Average response time per request </h2>
@@ -7,10 +8,10 @@
   </div>
 </div>
 <div class="row">
-  <div id="reqChart" class="col-md-6">
+  <div id="reqChart" class="col-md-6 height500">
     <svg></svg>
   </div>
-  <div id="hostChart" class="col-md-6">
+  <div id="hostChart" class="col-md-6 height500">
     <svg></svg>
   </div>
 </div>
@@ -23,21 +24,21 @@
   </div>
 </div>
 <div class="row">
-  <div id="apiChart" class="col-md-6">
+  <div id="apiChart" class="col-md-6 height500">
     <svg></svg>
   </div>
-  <div id="serviceChart" class="col-md-6">
+  <div id="serviceChart" class="col-md-6 height500">
     <svg></svg>
   </div>
 </div>
 
 <div class="row">
   <h2> All requests </h2>
-  <div id="allChart">
+  <div id="allChart" class="height500">
     <svg></svg>
   </div>
 </div>
-
+{{/if}}
 <script>
 
 
@@ -45,11 +46,16 @@ var barChart = function(yAxisLabel, svgDiv, data){
   nv.addGraph(function(){
     var chart = nv.models.multiBarChart()
              .duration(350)
-	     .rotateLabels(45)
-	     .margin({bottom:100, left: 70})
+	     .rotateLabels(90)
+	     .margin({bottom:200, left: 70})
 	     .groupSpacing(0.1)
+	     .height(400)
 	     ;
     chart.reduceXTicks(false).staggerLabels(true);
+
+    chart.xAxis
+         .axisLabelDistance(5)
+	 ;
 
     chart.yAxis
          .axisLabel(yAxisLabel)
