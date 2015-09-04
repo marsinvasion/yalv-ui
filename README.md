@@ -1,3 +1,3 @@
-# Yet Another Monitoring Framework - UI
+# Yet Another Log Viewer - UI
 
-This is the ui for YAMF https://github.com/marsinvasion/yamf
+This is the ui for YALV https://github.com/marsinvasion/yalv
