@@ -1,7 +1,7 @@
 # Yet Another Log Viewer - UI
 # yalv-ui
 
--This is the ui for YALV https://github.com/marsinvasion/yalv
+- This is the ui for YALV https://github.com/marsinvasion/yalv
 
 
 
