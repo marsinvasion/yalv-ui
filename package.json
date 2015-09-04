@@ -1,6 +1,6 @@
 {
-  "name": "yamf-ui",
-  "version": "0.0.0",
+  "name": "yalv-ui",
+  "version": "0.0.2",
   "private": true,
   "scripts": {
     "start": "node server.js"
