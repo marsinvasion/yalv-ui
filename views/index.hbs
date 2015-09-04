@@ -1,34 +1,29 @@
-{{#if allValues}}
 <div class="row">
-  <div id="reqChart" class="col-md-6">
+  <div class="col-md-6">
   <h2> Average response time per request </h2>
   </div>
-  <div id="reqChart" class="col-md-6">
+  <div class="col-md-6">
   <h2> Average response time per host </h2>
   </div>
 </div>
-<div class="row">
+<div class="row height600">
   <div id="reqChart" class="col-md-6 height500">
-    <svg></svg>
   </div>
   <div id="hostChart" class="col-md-6 height500">
-    <svg></svg>
   </div>
 </div>
-<div class="row">
-  <div id="reqChart" class="col-md-6">
+<div class="row pad50">
+  <div class="col-md-6">
   <h2> Average response time per api </h2>
   </div>
-  <div id="reqChart" class="col-md-6">
+  <div class="col-md-6">
   <h2> Average response time per service </h2>
   </div>
 </div>
-<div class="row">
+<div class="row pad50">
   <div id="apiChart" class="col-md-6 height500">
-    <svg></svg>
   </div>
   <div id="serviceChart" class="col-md-6 height500">
-    <svg></svg>
   </div>
 </div>
 <div class="row">
@@ -36,42 +31,20 @@
   <div id="allChart" class="height700">
   </div>
 </div>
-{{/if}}
 <script>
 
 
-var barChart = function(yAxisLabel, svgDiv, data,ht){
-  var height = ht || 400;
-  nv.addGraph(function(){
-    var chart = nv.models.multiBarChart()
-             .duration(350)
-	     .rotateLabels(90)
-	     .margin({bottom:200, left: 70})
-	     .groupSpacing(0.1)
-	     .height(height)
-	     ;
-    chart.reduceXTicks(false).staggerLabels(true);
-
-    chart.xAxis
-         .axisLabelDistance(5)
-	 ;
-
-    chart.yAxis
-         .axisLabel(yAxisLabel)
-	 .axisLabelDistance(5)
-	 .tickFormat(d3.format(',.01f'))
-	 ;
-
-    d3.select(svgDiv)
-      .datum(data)
-      .call(chart);
-
-    nv.utils.windowResize(chart.update);
-    return chart;
-
-  });
+var barChart = function(svgDiv, data){
+  var svg = dimple.newSvg(svgDiv, 500, 500);
+  var chart = new dimple.chart(svg, data);
+  chart.setBounds(60,20,300,300);
+  var x = chart.addCategoryAxis("x", "_id");
+  var y1 = chart.addMeasureAxis("y", "avgTime");
+  var bars = chart.addSeries("Average request time", dimple.plot.bar, [x,y1]);
+  bars.barGap = 0.5;
+  chart.draw();
 }
-var multiChart = function(svgDiv, data, ht){
+var multiChart = function(svgDiv, data){
   var svg = dimple.newSvg(svgDiv, 800, 400);
   var chart = new dimple.chart(svg, data);
   chart.setBounds(60,20,680,330);
@@ -86,26 +59,10 @@ var multiChart = function(svgDiv, data, ht){
   chart.draw();
 }
 
-  var requestChart = [{
-    key: "By Request",
-    values: {{{reqAgg}}}
-  }];
-  barChart("Average Time", '#reqChart svg', requestChart);
-  requestChart = [{
-    key: "By host",
-    values: {{{host}}}
-  }];
-  barChart("Average Time", '#hostChart svg', requestChart);
-  requestChart = [{
-    key: "By Api",
-    values: {{{api}}}
-  }];
-  barChart("Average Time", '#apiChart svg', requestChart);
-  requestChart = [{
-    key: "By Service",
-    values: {{{service}}}
-  }];
-  barChart("Average Time", '#serviceChart svg', requestChart);
+  barChart('#reqChart', {{{reqAgg}}} );
+  barChart('#hostChart', {{{host}}});
+  barChart('#apiChart', {{{api}}});
+  barChart('#serviceChart', {{{service}}});
   var allValues = {{{all}}};
   multiChart('#allChart', allValues);
 </script>

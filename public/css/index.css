@@ -4,6 +4,12 @@
 .height500 {
   height: 400px;
 }
+.height600 {
+  height: 400px;
+}
 .height700 {
   height: 700px;
+}
+.pad50 {
+  padding: 50px;
 }
