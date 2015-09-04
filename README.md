@@ -29,6 +29,4 @@ None
 MIT
 
 Copyright (c) 2015 Anoop Kulkarni (http://anoopkulkarni.com)
-=======
 
-This is the ui for YALV https://github.com/marsinvasion/yalv
