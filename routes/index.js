@@ -11,7 +11,10 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', function(req, res, next) {
-  db.setDate(new Date(req.body.start), new Date(req.body.end));
+  debugger;
+  if(req.body.start && req.body.end) 
+    db.setDate(new Date(req.body.start), new Date(req.body.end));
+  else db.defaultDate();
   get(res);
 });
 

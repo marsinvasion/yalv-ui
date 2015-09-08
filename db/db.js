@@ -9,11 +9,11 @@ MongoClient.connect(url, function(err, mydb) {
   logCollection = mydb.collection('logs');
 });
 
-var startDate;
-var endDate;
 
 module.exports = { 
 
+startDate: new Date(),
+endDate: new Date(),
 
 agg:function(aggBy,callback){
    logCollection.aggregate([{$match:{time:{$gt:startDate.toISOString(),$lt:endDate.toISOString()}}},{ $group:{ _id:aggBy, avgTime:{$avg:"$timeElapsed"}}}],{allowDisUser:true},function(err,result){
@@ -48,8 +48,8 @@ aggFunc:function(callback){
 },
 
 setDate:function(s,e){
-  this.startDate = s;
-  this.endDate = e;
+  startDate = s;
+  endDate = e;
 },
 
 defaultDate:function(){
