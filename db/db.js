@@ -9,14 +9,14 @@ MongoClient.connect(url, function(err, mydb) {
   logCollection = mydb.collection('logs');
 });
 
-var date = new Date();
-date.setDate(date.getDate()-2);
+var startDate;
+var endDate;
 
 module.exports = { 
 
 
 agg:function(aggBy,callback){
-   logCollection.aggregate([{$match:{time:{$gt:date.toISOString()}}},{ $group:{ _id:aggBy, avgTime:{$avg:"$timeElapsed"}}}],{allowDisUser:true},function(err,result){
+   logCollection.aggregate([{$match:{time:{$gt:startDate.toISOString(),$lt:endDate.toISOString()}}},{ $group:{ _id:aggBy, avgTime:{$avg:"$timeElapsed"}}}],{allowDisUser:true},function(err,result){
      if(err) return callback(err,null);
     callback(null,result);
    })
@@ -27,9 +27,9 @@ aggRequest:function(callback){
 },
 
 list:function(callback){
-  var date = new Date();
-  date.setDate(date.getDate()-2);
-  logCollection.find({time:{$gt:date.toISOString()}}).sort({_id:1}).toArray(function(err,result){
+  debugger;
+  logCollection.find({time:{$gt:startDate.toISOString(),$lt:endDate.toISOString()}}).sort({_id:1}).toArray(function(err,result){
+    debugger;
     if(err) return callback(err,null);
     callback(null,result);
   });
@@ -47,8 +47,15 @@ aggFunc:function(callback){
   this.agg("$func",callback);
 },
 
-setDate:function(d){
-  this.date = d;
+setDate:function(s,e){
+  this.startDate = s;
+  this.endDate = e;
+},
+
+defaultDate:function(){
+  startDate = new Date();
+  startDate.setDate(startDate.getDate()-2);
+  endDate = new Date();
 }
 
 }

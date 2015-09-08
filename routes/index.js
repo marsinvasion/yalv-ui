@@ -6,6 +6,17 @@ var async = require('async');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
+  db.defaultDate(); 
+  get(res);
+});
+
+router.post('/', function(req, res, next) {
+  db.setDate(new Date(req.body.start), new Date(req.body.end));
+  get(res);
+});
+
+var get = function(res){
+
   async.parallel({
     reqAgg: function(callback){
       db.aggRequest(callback);
@@ -24,15 +35,12 @@ router.get('/', function(req, res, next) {
     }
   },
   function(err, results){
-    debugger;
     if(err){
       util.log(err);
       return res.status(500).end();
     }
-    debugger;
     res.render('index', { title: 'Log Viewer', reqAgg:JSON.stringify(results.reqAgg), all:JSON.stringify(results.all), host:JSON.stringify(results.host),api:JSON.stringify(results.api),service:JSON.stringify(results.func) });
   });
-});
-
+}
 
 module.exports = router;
