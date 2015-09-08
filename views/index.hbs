@@ -1,34 +1,47 @@
-<div class="row pad50">
-  <div class="col-md-6">
-  <h2> Average response time per request </h2>
+<nav class="navbar navbar-default">
+
+</nav>
+<div class="container">
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="row">
+          <h2> Average response time per request </h2>
+      </div>
+      <div class="row">
+          <div id="reqChart"></div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="row">
+          <h2> Average response time per host </h2>
+      </div>
+      <div class="row">
+          <div id="hostChart"></div>
+      </div>
+    </div>
   </div>
-  <div class="col-md-6">
-  <h2> Average response time per host </h2>
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="row">
+          <h2> Average response time per api </h2>
+      </div>
+      <div class="row">
+          <div id="apiChart"></div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="row">
+          <h2> Average response time per function </h2>
+      </div>
+      <div class="row">
+          <div id="serviceChart"></div>
+      </div>
+    </div>
   </div>
-</div>
-<div class="row height600">
-  <div id="reqChart" class="col-md-6 height500">
-  </div>
-  <div id="hostChart" class="col-md-6 height500">
-  </div>
-</div>
-<div class="row pad50">
-  <div class="col-md-6">
-  <h2> Average response time per api </h2>
-  </div>
-  <div class="col-md-6">
-  <h2> Average response time per service </h2>
-  </div>
-</div>
-<div class="row">
-  <div id="apiChart" class="col-md-6 height500">
-  </div>
-  <div id="serviceChart" class="col-md-6 height500">
-  </div>
-</div>
-<div class="row">
-  <h2> All requests </h2>
-  <div id="allChart" class="height700">
+  <div class="row">
+    <h2> All requests </h2>
+    <div id="allChart">
+    </div>
   </div>
 </div>
 <script>
