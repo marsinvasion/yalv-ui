@@ -34,7 +34,7 @@
 <script>
 
 
-var barChart = function(svgDiv, data){
+var barChart = function(svgDiv, data, xLabel){
   var svg = dimple.newSvg(svgDiv, 550, 500);
   var chart = new dimple.chart(svg, data);
   chart.setBounds(60,20,500,250);
@@ -43,15 +43,16 @@ var barChart = function(svgDiv, data){
   var bars = chart.addSeries("Average request time", dimple.plot.bar, [x,y1]);
   bars.barGap = 0.5;
   chart.draw();
+  x.titleShape.text(xLabel);
 }
 var multiChart = function(svgDiv, data){
   var svg = dimple.newSvg(svgDiv, 1200, 600);
   var chart = new dimple.chart(svg, data);
   chart.setBounds(60,20,1000,400);
   var x = chart.addCategoryAxis("x", "time");
-  var y1 = chart.addMeasureAxis("y", "timeElapsed");
+  chart.addMeasureAxis("y", "timeElapsed");
   var y2 = chart.addMeasureAxis("y", "memoryUsed");
-  var bars = chart.addSeries("Time taken", dimple.plot.bar, [x,y1]);
+  var bars = chart.addSeries(["request","api","func","time","hostname","freeMemory","memoryUsed"], dimple.plot.bar);
   var lines = chart.addSeries("Memory Used", dimple.plot.line, [x,y2]);
   lines.lineMarkers = true;
   bars.barGap = 0.5;
@@ -59,10 +60,10 @@ var multiChart = function(svgDiv, data){
   chart.draw();
 }
 
-  barChart('#reqChart', {{{reqAgg}}} );
-  barChart('#hostChart', {{{host}}});
-  barChart('#apiChart', {{{api}}});
-  barChart('#serviceChart', {{{service}}});
+  barChart('#reqChart', {{{reqAgg}}}, "request id" );
+  barChart('#hostChart', {{{host}}}, "host name");
+  barChart('#apiChart', {{{api}}}, "api");
+  barChart('#serviceChart', {{{service}}}, "service");
   var allValues = {{{all}}};
   multiChart('#allChart', allValues);
 </script>
