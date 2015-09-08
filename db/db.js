@@ -9,47 +9,46 @@ MongoClient.connect(url, function(err, mydb) {
   logCollection = mydb.collection('logs');
 });
 
- 
+var date = new Date();
+date.setDate(date.getDate()-2);
 
-var agg = function(aggBy,callback){
-  var date = new Date();
-  date.setDate(date.getDate()-2);
+module.exports = { 
+
+
+agg:function(aggBy,callback){
    logCollection.aggregate([{$match:{time:{$gt:date.toISOString()}}},{ $group:{ _id:aggBy, avgTime:{$avg:"$timeElapsed"}}}],{allowDisUser:true},function(err,result){
      if(err) return callback(err,null);
     callback(null,result);
    })
-};
+},
    
-var aggRequest = function(callback){
-    agg("$request",callback);
-}
+aggRequest:function(callback){
+    this.agg("$request",callback);
+},
 
-var list = function(callback){
+list:function(callback){
   var date = new Date();
   date.setDate(date.getDate()-2);
   logCollection.find({time:{$gt:date.toISOString()}}).sort({_id:1}).toArray(function(err,result){
     if(err) return callback(err,null);
     callback(null,result);
   });
+},
+
+aggHost:function(callback){
+  this.agg("$os.hostname",callback);
+},
+
+aggApi:function(callback){
+  this.agg("$api",callback);
+},
+
+aggFunc:function(callback){
+  this.agg("$func",callback);
+},
+
+setDate:function(d){
+  this.date = d;
 }
 
-var aggHost = function(callback){
-  agg("$os.hostname",callback);
-}
-
-var aggApi = function(callback){
-  agg("$api",callback);
-}
-
-var aggFunc = function(callback){
-  agg("$func",callback);
-}
-
-module.exports = {
-  agg: agg,
-  aggRequest:aggRequest,
-  list: list,
-  aggHost:aggHost,
-  aggApi:aggApi,
-  aggFunc:aggFunc
 }
