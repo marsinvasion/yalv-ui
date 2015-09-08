@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row pad50">
   <div class="col-md-6">
   <h2> Average response time per request </h2>
   </div>
@@ -20,7 +20,7 @@
   <h2> Average response time per service </h2>
   </div>
 </div>
-<div class="row pad50">
+<div class="row">
   <div id="apiChart" class="col-md-6 height500">
   </div>
   <div id="serviceChart" class="col-md-6 height500">
@@ -35,9 +35,9 @@
 
 
 var barChart = function(svgDiv, data){
-  var svg = dimple.newSvg(svgDiv, 500, 500);
+  var svg = dimple.newSvg(svgDiv, 550, 500);
   var chart = new dimple.chart(svg, data);
-  chart.setBounds(60,20,300,300);
+  chart.setBounds(60,20,500,250);
   var x = chart.addCategoryAxis("x", "_id");
   var y1 = chart.addMeasureAxis("y", "avgTime");
   var bars = chart.addSeries("Average request time", dimple.plot.bar, [x,y1]);
@@ -45,9 +45,9 @@ var barChart = function(svgDiv, data){
   chart.draw();
 }
 var multiChart = function(svgDiv, data){
-  var svg = dimple.newSvg(svgDiv, 800, 400);
+  var svg = dimple.newSvg(svgDiv, 1200, 600);
   var chart = new dimple.chart(svg, data);
-  chart.setBounds(60,20,680,330);
+  chart.setBounds(60,20,1000,400);
   var x = chart.addCategoryAxis("x", "time");
   var y1 = chart.addMeasureAxis("y", "timeElapsed");
   var y2 = chart.addMeasureAxis("y", "memoryUsed");
