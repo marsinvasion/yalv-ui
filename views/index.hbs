@@ -1,6 +1,6 @@
 <nav class="navbar navbar-default">
   <div class="container">
-    <form role="search" class="form-inline navbar-form">
+    <form id="navForm" role="search" class="form-inline navbar-form">
       <div class='form-group input-group date' id='startDate'>
         <input type='text' class="form-control" name="start" />
         <span class="input-group-addon">
@@ -71,6 +71,7 @@
 
 
 var barChart = function(svgDiv, data, xLabel){
+  $(svgDiv).empty()
   var svg = dimple.newSvg(svgDiv, 550, 500);
   var chart = new dimple.chart(svg, data);
   chart.setBounds(60,20,500,250);
@@ -82,6 +83,7 @@ var barChart = function(svgDiv, data, xLabel){
   x.titleShape.text(xLabel);
 }
 var multiChart = function(svgDiv, data){
+  $(svgDiv).empty()
   var svg = dimple.newSvg(svgDiv, 1200, 600);
   var chart = new dimple.chart(svg, data);
   chart.setBounds(60,20,1000,400);
@@ -100,6 +102,26 @@ var multiChart = function(svgDiv, data){
   barChart('#hostChart', {{{host}}}, "host name");
   barChart('#apiChart', {{{api}}}, "api");
   barChart('#serviceChart', {{{service}}}, "service");
-  var allValues = {{{all}}};
-  multiChart('#allChart', allValues);
+  multiChart('#allChart', {{{all}}});
+
+  $( "#navForm" ).submit(function( event ) {
+ 
+    event.preventDefault();
+      
+    var $form = $( this ),
+    s = $form.find( "input[name='start']" ).val(),
+    e = $form.find( "input[name='end']" ).val(),
+    url = $form.attr( "action" );
+		       
+    var posting = $.post( url, { startDate: s, endDate:e } );
+    posting.done(function( data ) {
+      debugger;
+      barChart('#reqChart', JSON.parse(data.reqAgg), "request id" );
+      barChart('#hostChart', JSON.parse(data.host), "host name");
+      barChart('#apiChart', JSON.parse(data.api), "api");
+      barChart('#serviceChart', JSON.parse(data.service), "service");
+      multiChart('#allChart', JSON.parse(data.all));
+    });
+  });
+
 </script>

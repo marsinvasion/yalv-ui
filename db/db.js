@@ -12,21 +12,19 @@ MongoClient.connect(url, function(err, mydb) {
 
 module.exports = { 
 
-startDate: new Date(),
-endDate: new Date(),
 
-agg:function(aggBy,callback){
+agg:function(aggBy,callback,startDate,endDate){
    logCollection.aggregate([{$match:{time:{$gt:startDate.toISOString(),$lt:endDate.toISOString()}}},{ $group:{ _id:aggBy, avgTime:{$avg:"$timeElapsed"}}}],{allowDisUser:true},function(err,result){
      if(err) return callback(err,null);
     callback(null,result);
    })
 },
    
-aggRequest:function(callback){
-    this.agg("$request",callback);
+aggRequest:function(callback,startDate,endDate){
+    this.agg("$request",callback,startDate,endDate);
 },
 
-list:function(callback){
+list:function(callback,startDate,endDate){
   debugger;
   logCollection.find({time:{$gt:startDate.toISOString(),$lt:endDate.toISOString()}}).sort({_id:1}).toArray(function(err,result){
     debugger;
@@ -35,27 +33,18 @@ list:function(callback){
   });
 },
 
-aggHost:function(callback){
-  this.agg("$os.hostname",callback);
+aggHost:function(callback,startDate,endDate){
+  this.agg("$os.hostname",callback,startDate,endDate);
 },
 
-aggApi:function(callback){
-  this.agg("$api",callback);
+aggApi:function(callback,startDate,endDate){
+  this.agg("$api",callback,startDate,endDate);
 },
 
-aggFunc:function(callback){
-  this.agg("$func",callback);
-},
-
-setDate:function(s,e){
-  startDate = s;
-  endDate = e;
-},
-
-defaultDate:function(){
-  startDate = new Date();
-  startDate.setDate(startDate.getDate()-2);
-  endDate = new Date();
+aggFunc:function(callback,startDate,endDate){
+  this.agg("$func",callback,startDate,endDate);
 }
+
+
 
 }

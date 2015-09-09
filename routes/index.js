@@ -6,35 +6,39 @@ var async = require('async');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  db.defaultDate(); 
-  get(res);
+  var startDate = new Date();
+  startDate.setDate(startDate.getDate()-2);
+  var endDate = new Date();
+  getResult(res,startDate,endDate,"get");
 });
 
 router.post('/', function(req, res, next) {
-  debugger;
-  if(req.body.start && req.body.end) 
-    db.setDate(new Date(req.body.start), new Date(req.body.end));
-  else db.defaultDate();
-  get(res);
+  var s;
+  if(req.body.startDate) s = new Date(req.body.startDate);
+  else s = new Date();
+  var e;
+  if(req.body.endDate) e = new Date(req.body.endDate);
+  else e = new Date();
+  getResult(res,s,e,"post");
 });
 
-var get = function(res){
+var getResult = function(res,startDate,endDate,type){
 
   async.parallel({
     reqAgg: function(callback){
-      db.aggRequest(callback);
+      db.aggRequest(callback,startDate,endDate);
     },
     all: function(callback){
-      db.list(callback);
+      db.list(callback,startDate,endDate);
     },
     host: function(callback){
-      db.aggHost(callback);
+      db.aggHost(callback,startDate,endDate);
     },
     api: function(callback){
-      db.aggApi(callback);
+      db.aggApi(callback,startDate,endDate);
     },
     func: function(callback){
-      db.aggFunc(callback);
+      db.aggFunc(callback,startDate,endDate);
     }
   },
   function(err, results){
@@ -42,7 +46,17 @@ var get = function(res){
       util.log(err);
       return res.status(500).end();
     }
-    res.render('index', { title: 'Log Viewer', reqAgg:JSON.stringify(results.reqAgg), all:JSON.stringify(results.all), host:JSON.stringify(results.host),api:JSON.stringify(results.api),service:JSON.stringify(results.func) });
+    if('post'===type){
+      var data = {};
+      data.reqAgg=JSON.stringify(results.reqAgg);
+      data.all=JSON.stringify(results.all);
+      data.host=JSON.stringify(results.host);
+      data.api=JSON.stringify(results.api);
+      data.service=JSON.stringify(results.func);
+      res.json(data);
+    }else{
+      res.render('index', { title: 'Log Viewer', reqAgg:JSON.stringify(results.reqAgg), all:JSON.stringify(results.all), host:JSON.stringify(results.host),api:JSON.stringify(results.api),service:JSON.stringify(results.func) });
+    }
   });
 }
 
