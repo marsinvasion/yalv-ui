@@ -23,6 +23,7 @@
     $('#startDate').datetimepicker();
     $('#endDate').datetimepicker();
   });
+  var allValues;
 </script>
 <div class="container">
   <div class="row">
@@ -69,7 +70,6 @@
 </div>
 <script>
 
-
 var barChart = function(svgDiv, data, xLabel){
   $(svgDiv).empty()
   var svg = dimple.newSvg(svgDiv, 550, 500);
@@ -102,7 +102,8 @@ var multiChart = function(svgDiv, data){
   barChart('#hostChart', {{{host}}}, "host name");
   barChart('#apiChart', {{{api}}}, "api");
   barChart('#serviceChart', {{{service}}}, "service");
-  multiChart('#allChart', {{{all}}});
+  allValues = {{{all}}};
+  multiChart('#allChart', allValues);
 
   $( "#navForm" ).submit(function( event ) {
  
@@ -120,7 +121,8 @@ var multiChart = function(svgDiv, data){
       barChart('#hostChart', JSON.parse(data.host), "host name");
       barChart('#apiChart', JSON.parse(data.api), "api");
       barChart('#serviceChart', JSON.parse(data.service), "service");
-      multiChart('#allChart', JSON.parse(data.all));
+      allValues = JSON.parse(data.all);
+      multiChart('#allChart', allValues);
     });
   });
 
