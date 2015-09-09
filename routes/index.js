@@ -14,8 +14,12 @@ router.get('/', function(req, res, next) {
 
 router.post('/', function(req, res, next) {
   var s;
-  if(req.body.startDate) s = new Date(req.body.startDate);
-  else s = new Date();
+  if(req.body.startDate){
+    s = new Date(req.body.startDate);
+  }else{
+    s = new Date();
+    s.setDate(s.getDate()-2);
+  }
   var e;
   if(req.body.endDate) e = new Date(req.body.endDate);
   else e = new Date();
