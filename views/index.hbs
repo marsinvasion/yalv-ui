@@ -98,34 +98,19 @@ var multiChart = function(svgDiv, data){
   chart.draw();
 }
 
-var autoComplete = function(){
-
-  $('#navSearch').selectize({
-    persist: false,
-    maxItems: null,
-    searchField: ['request'],
-    options: allValues,
-    delimiter:',',
-    render: {
-      item: function(item, escape) {
-        return '<div>' +
-        (item.request ? '<span class="name">'+escape(item.request)+'</span>':'') +'</div>';
-      },
-      option: function(item, escape) {
-        var label = item.request;
-	return '<div><span class="label">' + escape(label) + '</span></div>';
-      }
-    }
+var autoComplete = function(reqAgg){
+  horsey(document.getElementById('navSearch'), {
+    suggestions: reqAgg.map(function(a) {return a._id}),
   });
 }
-
-  barChart('#reqChart', {{{reqAgg}}}, "request id" );
+  var reqAgg = {{{reqAgg}}};
+  barChart('#reqChart', reqAgg, "request id" );
   barChart('#hostChart', {{{host}}}, "host name");
   barChart('#apiChart', {{{api}}}, "api");
   barChart('#serviceChart', {{{service}}}, "service");
   allValues = {{{all}}};
   multiChart('#allChart', allValues);
-  autoComplete();
+  autoComplete(reqAgg);
 
   $( "#navForm" ).submit(function( event ) {
  
