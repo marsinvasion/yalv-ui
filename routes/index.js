@@ -9,7 +9,7 @@ router.get('/', function(req, res, next) {
   var startDate = new Date();
   startDate.setDate(startDate.getDate()-2);
   var endDate = new Date();
-  getResult(res,startDate,endDate,"get");
+  getResult(res,startDate,endDate,getCallback);
 });
 
 router.post('/', function(req, res, next) {
@@ -23,10 +23,10 @@ router.post('/', function(req, res, next) {
   var e;
   if(req.body.endDate) e = new Date(req.body.endDate);
   else e = new Date();
-  getResult(res,s,e,"post");
+  getResult(res,s,e,postCallback);
 });
 
-var getResult = function(res,startDate,endDate,type){
+var getResult = function(res,startDate,endDate,reqCallback){
 
   async.parallel({
     reqAgg: function(callback){
@@ -50,18 +50,23 @@ var getResult = function(res,startDate,endDate,type){
       util.log(err);
       return res.status(500).end();
     }
-    if('post'===type){
-      var data = {};
-      data.reqAgg=JSON.stringify(results.reqAgg);
-      data.all=JSON.stringify(results.all);
-      data.host=JSON.stringify(results.host);
-      data.api=JSON.stringify(results.api);
-      data.service=JSON.stringify(results.func);
-      res.json(data);
-    }else{
-      res.render('index', { title: 'Log Viewer', reqAgg:JSON.stringify(results.reqAgg), all:JSON.stringify(results.all), host:JSON.stringify(results.host),api:JSON.stringify(results.api),service:JSON.stringify(results.func) });
-    }
+    reqCallback(res,results);
   });
+}
+
+var getCallback = function(res,results){
+  res.render('index', { title: 'Log Viewer', reqAgg:JSON.stringify(results.reqAgg), all:JSON.stringify(results.all), host:JSON.stringify(results.host),api:JSON.stringify(results.api),service:JSON.stringify(results.func) });
+
+}
+
+var postCallback = function(res,results){
+  var data = {};
+  data.reqAgg=JSON.stringify(results.reqAgg);
+  data.all=JSON.stringify(results.all);
+  data.host=JSON.stringify(results.host);
+  data.api=JSON.stringify(results.api);
+  data.service=JSON.stringify(results.func);
+  res.json(data);
 }
 
 module.exports = router;

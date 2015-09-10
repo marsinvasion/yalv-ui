@@ -1,7 +1,6 @@
 <nav class="navbar navbar-default navbar-fixed-top">
   <div class="container">
     <form id="navForm" role="search" class="form-inline navbar-form">
-      <input type="text" class="form-control" id="navSearch" placeholder="Search" />
       <div class='form-group input-group date' id='startDate'>
         <input type='text' class="form-control" name="start" />
         <span class="input-group-addon">
@@ -14,6 +13,7 @@
           <span class="glyphicon glyphicon-calendar"></span>
         </span>
       </div>
+      <input type="text" class="form-control" id="navSearch" placeholder="request id search" />
       <button type="submit" class="btn btn-default">Filter</button>
     </form>
   </div>
@@ -99,8 +99,8 @@ var multiChart = function(svgDiv, data){
 }
 
 var autoComplete = function(reqAgg){
-  horsey(document.getElementById('navSearch'), {
-    suggestions: reqAgg.map(function(a) {return a._id}),
+  $( "#navSearch" ).autocomplete({
+        source: reqAgg.map(function(a) {return a._id})
   });
 }
   var reqAgg = {{{reqAgg}}};
@@ -123,13 +123,14 @@ var autoComplete = function(reqAgg){
 		       
     var posting = $.post( url, { startDate: s, endDate:e } );
     posting.done(function( data ) {
-      debugger;
-      barChart('#reqChart', JSON.parse(data.reqAgg), "request id" );
+      reqAgg = JSON.parse(data.reqAgg);
+      barChart('#reqChart', reqAgg, "request id" );
       barChart('#hostChart', JSON.parse(data.host), "host name");
       barChart('#apiChart', JSON.parse(data.api), "api");
       barChart('#serviceChart', JSON.parse(data.service), "service");
       allValues = JSON.parse(data.all);
       multiChart('#allChart', allValues);
+      autoComplete(reqAgg);
     });
   });
 
