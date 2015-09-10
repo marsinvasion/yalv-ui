@@ -84,6 +84,7 @@
 
 var barChart = function(svgDiv, data, xLabel){
   $(svgDiv).empty()
+  if(data && data.length>0){
   var svg = dimple.newSvg(svgDiv, 550, 500);
   var chart = new dimple.chart(svg, data);
   chart.setBounds(60,20,500,250);
@@ -93,9 +94,13 @@ var barChart = function(svgDiv, data, xLabel){
   bars.barGap = 0.5;
   chart.draw();
   x.titleShape.text(xLabel);
+  }else{
+    $(svgDiv).append('<h4> No Data Available </h4>');
+  }
 }
 var multiChart = function(svgDiv, data){
   $(svgDiv).empty()
+  if(data && data.length>0){
   var svg = dimple.newSvg(svgDiv, 1200, 600);
   var chart = new dimple.chart(svg, data);
   chart.setBounds(60,20,1000,400);
@@ -107,6 +112,9 @@ var multiChart = function(svgDiv, data){
   lines.lineMarkers = true;
   chart.addLegend(60, 5, 680, 10, "right", lines);
   chart.draw();
+  }else{
+    $(svgDiv).append('<h4> No Data Available </h4>');
+  }
 }
 
 var autoComplete = function(data){
