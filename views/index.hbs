@@ -13,7 +13,8 @@
           <span class="glyphicon glyphicon-calendar"></span>
         </span>
       </div>
-      <input type="text" class="form-control" id="navSearch" placeholder="request id search" />
+      <input type="text" class="form-control" id="navSearch" placeholder="Search" />
+      <input type="hidden" id="navSearchType" />
       <button type="submit" class="btn btn-default">Filter</button>
     </form>
   </div>
@@ -91,7 +92,7 @@ var multiChart = function(svgDiv, data){
   chart.addMeasureAxis("y", "timeElapsed");
   var y2 = chart.addMeasureAxis("y", "memoryUsed");
   var bars = chart.addSeries(["request","api","func","time","hostname","freeMemory","memoryUsed"], dimple.plot.bar);
-  var lines = chart.addSeries("Memory Used", dimple.plot.line, [x,y2]);
+  var lines = chart.addSeries("Server Memory Used", dimple.plot.line, [x,y2]);
   lines.lineMarkers = true;
   bars.barGap = 0.5;
   chart.addLegend(60, 5, 680, 10, "right", lines);
@@ -99,8 +100,17 @@ var multiChart = function(svgDiv, data){
 }
 
 var autoComplete = function(reqAgg){
+  var data = [];
+  for(var i=0;i<reqAgg.length;i++){
+    data.push({label:reqAgg[i]._id,type:'requestId'});
+  }
   $( "#navSearch" ).autocomplete({
-        source: reqAgg.map(function(a) {return a._id})
+    source: data,
+    select: function(event, ui){
+      $("#navSearch").val(ui.item.label);
+      $("#navSearchType").val(ui.item.type);
+      return false;
+    }
   });
 }
   var reqAgg = {{{reqAgg}}};
@@ -119,10 +129,11 @@ var autoComplete = function(reqAgg){
     var $form = $( this ),
     s = $form.find( "input[name='start']" ).val(),
     e = $form.find( "input[name='end']" ).val(),
-    reqId = $form.find( "input[id='navSearch']" ).val(),
+    searchId = $form.find( "input[id='navSearch']" ).val(),
+    searchType = $form.find( "input[id='navSearchType']" ).val(),
     url = $form.attr( "action" );
 		       
-    var posting = $.post( url, { startDate: s, endDate:e, reqId:reqId } );
+    var posting = $.post( url, { startDate: s, endDate:e, searchId:searchId, searchType:searchType } );
     posting.done(function( data ) {
       reqAgg = JSON.parse(data.reqAgg);
       barChart('#reqChart', reqAgg, "request id" );

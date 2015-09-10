@@ -23,26 +23,26 @@ router.post('/', function(req, res, next) {
   var e;
   if(req.body.endDate) e = new Date(req.body.endDate);
   else e = new Date();
-  getResult(res,s,e,postCallback,req.body.reqId);
+  getResult(res,s,e,postCallback,req.body.searchId, req.body.searchType);
 });
 
-var getResult = function(res,startDate,endDate,reqCallback,reqId){
+var getResult = function(res,startDate,endDate,reqCallback,searchId,searchType){
 
   async.parallel({
     reqAgg: function(callback){
-      db.aggRequest(callback,startDate,endDate,reqId);
+      db.aggRequest(callback,startDate,endDate,searchId,searchType);
     },
     all: function(callback){
-      db.list(callback,startDate,endDate,reqId);
+      db.list(callback,startDate,endDate,searchId,searchType);
     },
     host: function(callback){
-      db.aggHost(callback,startDate,endDate,reqId);
+      db.aggHost(callback,startDate,endDate,searchId, searchType);
     },
     api: function(callback){
-      db.aggApi(callback,startDate,endDate,reqId);
+      db.aggApi(callback,startDate,endDate,searchId, searchType);
     },
     func: function(callback){
-      db.aggFunc(callback,startDate,endDate,reqId);
+      db.aggFunc(callback,startDate,endDate,searchId, searchType);
     }
   },
   function(err, results){

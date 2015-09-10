@@ -5,7 +5,7 @@ var logCollection;
 
 MongoClient.connect(url, function(err, mydb) {
   if(err) throw err;
-  util.log("Connected correctly to server");
+  util.log("Connected to mongo");
   logCollection = mydb.collection('logs');
 });
 
@@ -13,10 +13,11 @@ MongoClient.connect(url, function(err, mydb) {
 module.exports = { 
 
 
-agg:function(aggBy,callback,startDate,endDate,reqId){
+agg:function(aggBy,callback,startDate,endDate,searchId, searchType){
   var aggBy = [{$match:{time:{$gt:startDate.toISOString(),$lt:endDate.toISOString()}}},{ $group:{ _id:aggBy, avgTime:{$avg:"$timeElapsed"}}}]; 
-   if(reqId){
-     aggBy.unshift({$match:{request:reqId}});
+   if(searchType && searchId){
+     if('requestId' === searchType)
+       aggBy.unshift({$match:{request:searchId}});
    }
    debugger;
    logCollection.aggregate(aggBy,{allowDisUser:true},function(err,result){
@@ -25,18 +26,18 @@ agg:function(aggBy,callback,startDate,endDate,reqId){
    })
 },
    
-aggRequest:function(callback,startDate,endDate,reqId){
-    this.agg("$request",callback,startDate,endDate,reqId);
+aggRequest:function(callback,startDate,endDate,searchId,searchType){
+    this.agg("$request",callback,startDate,endDate,searchId,searchType);
 },
 
-list:function(callback,startDate,endDate,reqId){
+list:function(callback,startDate,endDate,searchId,searchType){
   debugger;
   var findBy = {time:{$gt:startDate.toISOString(),$lt:endDate.toISOString()}};
-  if(reqId){
+  if('requestId'===searchType){
     findBy = {
       $and : [
         findBy,
-	{request: reqId}
+	{request: searchId}
       ]
     }
   }
@@ -47,16 +48,16 @@ list:function(callback,startDate,endDate,reqId){
   });
 },
 
-aggHost:function(callback,startDate,endDate,reqId){
-  this.agg("$os.hostname",callback,startDate,endDate,reqId);
+aggHost:function(callback,startDate,endDate,searchId,searchType){
+  this.agg("$os.hostname",callback,startDate,endDate,searchId,searchType);
 },
 
-aggApi:function(callback,startDate,endDate,reqId){
-  this.agg("$api",callback,startDate,endDate,reqId);
+aggApi:function(callback,startDate,endDate,searchId,searchType){
+  this.agg("$api",callback,startDate,endDate,searchId,searchType);
 },
 
-aggFunc:function(callback,startDate,endDate,reqId){
-  this.agg("$func",callback,startDate,endDate,reqId);
+aggFunc:function(callback,startDate,endDate,searchId,searchType){
+  this.agg("$func",callback,startDate,endDate,searchId,searchType);
 }
 
 
