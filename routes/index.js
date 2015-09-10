@@ -50,12 +50,52 @@ var getResult = function(res,startDate,endDate,reqCallback,searchId,searchType){
       util.log(err);
       return res.status(500).end();
     }
-    reqCallback(res,results);
+    results.autoComplete = [];
+    async.parallel([
+      function(parCallback){
+        async.each(results.reqAgg,function(req,callback){
+          results.autoComplete.push({label:req._id,type:'requestId'});
+          callback();
+        },function(){  
+	  parCallback();
+        });
+      },
+      function(parCallback){
+        async.each(results.host,function(req,callback){
+	  debugger;
+          results.autoComplete.push({label:req._id,type:'host'});
+          callback();
+        },function(){  
+	  parCallback();
+        });
+      },
+      function(parCallback){
+        async.each(results.api,function(req,callback){
+          results.autoComplete.push({label:req._id,type:'api'});
+          callback();
+        },function(){  
+	  parCallback();
+        });
+      },
+      function(parCallback){
+        var data=[];
+        async.each(results.func,function(req,callback){
+          results.autoComplete.push({label:req._id,type:'func'});
+          callback();
+        },function(){  
+	  parCallback();
+        });
+      }
+    ],
+    function(err){
+        debugger;
+        reqCallback(res,results);
+    });
   });
 }
 
 var getCallback = function(res,results){
-  res.render('index', { title: 'Log Viewer', reqAgg:JSON.stringify(results.reqAgg), all:JSON.stringify(results.all), host:JSON.stringify(results.host),api:JSON.stringify(results.api),service:JSON.stringify(results.func) });
+  res.render('index', { title: 'Log Viewer', reqAgg:JSON.stringify(results.reqAgg), all:JSON.stringify(results.all), host:JSON.stringify(results.host),api:JSON.stringify(results.api),service:JSON.stringify(results.func),autoComplete:results.autoComplete });
 
 }
 
@@ -66,6 +106,7 @@ var postCallback = function(res,results){
   data.host=JSON.stringify(results.host);
   data.api=JSON.stringify(results.api);
   data.service=JSON.stringify(results.func);
+  data.autoComplete=JSON.stringify(results.autoComplete);
   res.json(data);
 }
 

@@ -99,11 +99,7 @@ var multiChart = function(svgDiv, data){
   chart.draw();
 }
 
-var autoComplete = function(reqAgg){
-  var data = [];
-  for(var i=0;i<reqAgg.length;i++){
-    data.push({label:reqAgg[i]._id,type:'requestId'});
-  }
+var autoComplete = function(data){
   $( "#navSearch" ).autocomplete({
     source: data,
     select: function(event, ui){
@@ -120,7 +116,7 @@ var autoComplete = function(reqAgg){
   barChart('#serviceChart', {{{service}}}, "service");
   allValues = {{{all}}};
   multiChart('#allChart', allValues);
-  autoComplete(reqAgg);
+  autoComplete({{{autoComplete}}});
 
   $( "#navForm" ).submit(function( event ) {
  
@@ -142,7 +138,7 @@ var autoComplete = function(reqAgg){
       barChart('#serviceChart', JSON.parse(data.service), "service");
       allValues = JSON.parse(data.all);
       multiChart('#allChart', allValues);
-      autoComplete(reqAgg);
+      autoComplete(JSON.parse(data.autoComplete));
     });
   });
 
