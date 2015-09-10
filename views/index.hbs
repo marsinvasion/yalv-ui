@@ -119,9 +119,10 @@ var autoComplete = function(reqAgg){
     var $form = $( this ),
     s = $form.find( "input[name='start']" ).val(),
     e = $form.find( "input[name='end']" ).val(),
+    reqId = $form.find( "input[id='navSearch']" ).val(),
     url = $form.attr( "action" );
 		       
-    var posting = $.post( url, { startDate: s, endDate:e } );
+    var posting = $.post( url, { startDate: s, endDate:e, reqId:reqId } );
     posting.done(function( data ) {
       reqAgg = JSON.parse(data.reqAgg);
       barChart('#reqChart', reqAgg, "request id" );

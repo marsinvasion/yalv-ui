@@ -9,7 +9,7 @@ router.get('/', function(req, res, next) {
   var startDate = new Date();
   startDate.setDate(startDate.getDate()-2);
   var endDate = new Date();
-  getResult(res,startDate,endDate,getCallback);
+  getResult(res,startDate,endDate,getCallback,null);
 });
 
 router.post('/', function(req, res, next) {
@@ -23,26 +23,26 @@ router.post('/', function(req, res, next) {
   var e;
   if(req.body.endDate) e = new Date(req.body.endDate);
   else e = new Date();
-  getResult(res,s,e,postCallback);
+  getResult(res,s,e,postCallback,req.body.reqId);
 });
 
-var getResult = function(res,startDate,endDate,reqCallback){
+var getResult = function(res,startDate,endDate,reqCallback,reqId){
 
   async.parallel({
     reqAgg: function(callback){
-      db.aggRequest(callback,startDate,endDate);
+      db.aggRequest(callback,startDate,endDate,reqId);
     },
     all: function(callback){
-      db.list(callback,startDate,endDate);
+      db.list(callback,startDate,endDate,reqId);
     },
     host: function(callback){
-      db.aggHost(callback,startDate,endDate);
+      db.aggHost(callback,startDate,endDate,reqId);
     },
     api: function(callback){
-      db.aggApi(callback,startDate,endDate);
+      db.aggApi(callback,startDate,endDate,reqId);
     },
     func: function(callback){
-      db.aggFunc(callback,startDate,endDate);
+      db.aggFunc(callback,startDate,endDate,reqId);
     }
   },
   function(err, results){
