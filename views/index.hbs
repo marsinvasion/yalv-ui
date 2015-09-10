@@ -94,7 +94,6 @@ var multiChart = function(svgDiv, data){
   var bars = chart.addSeries(["request","api","func","time","hostname","freeMemory","memoryUsed"], dimple.plot.bar);
   var lines = chart.addSeries("Server Memory Used", dimple.plot.line, [x,y2]);
   lines.lineMarkers = true;
-  bars.barGap = 0.5;
   chart.addLegend(60, 5, 680, 10, "right", lines);
   chart.draw();
 }
