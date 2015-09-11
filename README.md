@@ -1,10 +1,18 @@
 # Yet Another Log Viewer - UI
-# yalv-ui
 
-- This is the ui for YALV https://github.com/marsinvasion/yalv
+- This is the ui for [YALV](https://github.com/marsinvasion/yalv)
 
+## Log Viewer
 
+- Load your application logs by [YALV](https://github.com/marsinvasion/yalv)
 
+- Start yalv-ui
+```
+npm start
+```
+- Once started, you should be able to access the application at http://localhost:3000
+
+- You can filter the logs by date, or drill down by requestId, service, function or hostname
 
 
 
