@@ -107,7 +107,7 @@ var multiChart = function(svgDiv, data){
   var x = chart.addCategoryAxis("x", "time");
   chart.addMeasureAxis("y", "timeElapsed");
   var y2 = chart.addMeasureAxis("y", "memoryUsed");
-  var bars = chart.addSeries(["request","api","func","time","hostname","freeMemory","memoryUsed"], dimple.plot.bar);
+  var bars = chart.addSeries(["request","api","func","time","hostname","freeMemory","memoryUsed","loadAverage","uptime"], dimple.plot.bar);
   var lines = chart.addSeries("Server Memory Used", dimple.plot.line, [x,y2]);
   lines.lineMarkers = true;
   chart.addLegend(60, 5, 680, 10, "right", lines);
