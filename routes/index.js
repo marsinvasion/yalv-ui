@@ -96,7 +96,7 @@ var getResult = function(res,startDate,endDate,reqCallback,options){
 
 var getCallback = function(res,results){
   debugger;
-  res.render('index', { title: 'Log Viewer', reqAgg:JSON.stringify(results.reqAgg), all:JSON.stringify(results.all), host:JSON.stringify(results.host),api:JSON.stringify(results.api),service:JSON.stringify(results.func),autoComplete:results.autoComplete });
+  res.render('index', { title: 'Log Viewer', reqAgg:JSON.stringify(results.reqAgg), all:JSON.stringify(results.all), host:JSON.stringify(results.host),api:JSON.stringify(results.api),service:JSON.stringify(results.func),autoComplete:JSON.stringify(results.autoComplete) });
 
 }
 
