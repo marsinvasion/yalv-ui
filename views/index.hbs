@@ -104,7 +104,7 @@ var multiChart = function(svgDiv, data){
   var svg = dimple.newSvg(svgDiv, 1200, 600);
   var chart = new dimple.chart(svg, data);
   chart.setBounds(60,20,1000,400);
-  var x = chart.addCategoryAxis("x", "time");
+  var x = chart.addTimeAxis("x", "time");
   chart.addMeasureAxis("y", "timeElapsed");
   var y2 = chart.addMeasureAxis("y", "memoryUsed");
   var bars = chart.addSeries(["request","api","func","time","hostname","freeMemory","memoryUsed","loadAverage","uptime"], dimple.plot.bar);
