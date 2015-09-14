@@ -43,6 +43,7 @@ aggRequest:function(callback,startDate,endDate,searchId,searchType){
 list:function(callback,startDate,endDate,searchId,searchType){
   debugger;
   var findBy = {time:{$gt:startDate.toISOString(),$lt:endDate.toISOString()}};
+  if(searchType && searchId){
   if('requestId'===searchType){
     findBy = {
       $and : [
@@ -74,6 +75,7 @@ list:function(callback,startDate,endDate,searchId,searchType){
 	{func: searchId}
       ]
     }
+  }
   }
   logCollection.find(findBy).sort({_id:1}).toArray(function(err,result){
     debugger;
