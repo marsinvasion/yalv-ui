@@ -73,6 +73,7 @@ function onError(error) {
       process.exit(1);
       break;
     default:
+      console.trace(error);
       throw error;
   }
 }

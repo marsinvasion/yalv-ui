@@ -23,26 +23,26 @@ router.post('/', function(req, res, next) {
   var e;
   if(req.body.endDate) e = new Date(req.body.endDate);
   else e = new Date();
-  getResult(res,s,e,postCallback,req.body.searchId, req.body.searchType);
+  getResult(res,s,e,postCallback,req.body.options);
 });
 
-var getResult = function(res,startDate,endDate,reqCallback,searchId,searchType){
+var getResult = function(res,startDate,endDate,reqCallback,options){
 
   async.parallel({
     reqAgg: function(callback){
-      db.aggRequest(callback,startDate,endDate,searchId,searchType);
+      db.aggRequest(callback,startDate,endDate,options);
     },
     all: function(callback){
-      db.list(callback,startDate,endDate,searchId,searchType);
+      db.list(callback,startDate,endDate,options);
     },
     host: function(callback){
-      db.aggHost(callback,startDate,endDate,searchId, searchType);
+      db.aggHost(callback,startDate,endDate,options);
     },
     api: function(callback){
-      db.aggApi(callback,startDate,endDate,searchId, searchType);
+      db.aggApi(callback,startDate,endDate,options);
     },
     func: function(callback){
-      db.aggFunc(callback,startDate,endDate,searchId, searchType);
+      db.aggFunc(callback,startDate,endDate,options);
     }
   },
   function(err, results){
@@ -95,6 +95,7 @@ var getResult = function(res,startDate,endDate,reqCallback,searchId,searchType){
 }
 
 var getCallback = function(res,results){
+  debugger;
   res.render('index', { title: 'Log Viewer', reqAgg:JSON.stringify(results.reqAgg), all:JSON.stringify(results.all), host:JSON.stringify(results.host),api:JSON.stringify(results.api),service:JSON.stringify(results.func),autoComplete:results.autoComplete });
 
 }

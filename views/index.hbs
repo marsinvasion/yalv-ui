@@ -11,6 +11,7 @@
      </div>
     <div id="navbar" class="navbar-collapse collapse">
     <form id="navForm" role="search" class="form-inline navbar-form">
+      <div class="row">
       <div class='form-group input-group date' id='startDate'>
         <input type='text' class="form-control" name="start" />
         <span class="input-group-addon">
@@ -26,6 +27,11 @@
       <input type="text" class="form-control" id="navSearch" placeholder="Search" />
       <input type="hidden" id="navSearchType" />
       <button type="submit" class="btn btn-default">Filter</button>
+      </div>
+      <div class="row">
+      <ol class="breadcrumb" id="searchHistory">
+      </ol>
+      </div>
     </form>
     </div>
   </div>
@@ -142,13 +148,27 @@ var autoComplete = function(data){
       
     var $form = $( this ),
     s = $form.find( "input[name='start']" ).val(),
-    e = $form.find( "input[name='end']" ).val(),
-    searchId = $form.find( "input[id='navSearch']" ).val(),
+    e = $form.find( "input[name='end']" ).val();
+    var options = [];
+    var history = $form.find("li");
+    if(history){
+      for(var i=0;i<history.length;i++){
+        var vals = history[i].textContent.split('=');
+	options.push({key:vals[0].trim(),val:vals[1].trim()});
+      }
+    }
+    var searchId = $form.find( "input[id='navSearch']" ).val(),
     searchType = $form.find( "input[id='navSearchType']" ).val(),
     url = $form.attr( "action" );
-		       
-    var posting = $.post( url, { startDate: s, endDate:e, searchId:searchId, searchType:searchType } );
+    if(searchId && searchType){
+      options.push({key:searchType.trim(),val:searchId.trim()});
+    }
+    var posting = $.post( url, { startDate: s, endDate:e, options:options } );
     posting.done(function( data ) {
+      if(searchType && searchId)
+        $("#searchHistory").append('<li>'+searchType +' = '+searchId+'</li>');
+      $form.find( "input[id='navSearch']" ).val("");
+      $form.find( "input[id='navSearchType']" ).val("");
       reqAgg = JSON.parse(data.reqAgg);
       barChart('#reqChart', reqAgg, "request id" );
       barChart('#hostChart', JSON.parse(data.host), "host name");

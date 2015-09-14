@@ -12,88 +12,85 @@ MongoClient.connect(url, function(err, mydb) {
 
 module.exports = { 
 
-
-agg:function(aggBy,callback,startDate,endDate,searchId, searchType){
-  var aggBy = [{$match:{time:{$gt:startDate.toISOString(),$lt:endDate.toISOString()}}},{ $group:{ _id:aggBy, avgTime:{$avg:"$timeElapsed"}}}]; 
-   if(searchType && searchId){
-     if('requestId' === searchType){
-       aggBy.unshift({$match:{request:searchId}});
+matchAggBy:function(options){
+  var aggBy = [];
+  if(options){
+   debugger;
+   for(var i=0;i<options.length;i++){
+     if('requestId' === options[i].key){
+       aggBy.push({$match:{request:options[i].val}});
      }
-     else if('host' === searchType){
-       aggBy.unshift({$match:{hostname:searchId}});
+     else if('host' === options[i].key){
+       aggBy.push({$match:{hostname:options[i].val}});
      }
-     if('api' === searchType){
-       aggBy.unshift({$match:{api:searchId}});
+     if('api' === options[i].key){
+       aggBy.push({$match:{api:options[i].val}});
      }
-     if('func' === searchType){
-       aggBy.unshift({$match:{func:searchId}});
+     if('func' === options[i].key){
+       aggBy.push({$match:{func:options[i].val}});
      }
    }
-   debugger;
-   logCollection.aggregate(aggBy,{allowDisUser:true},function(err,result){
+  }
+  return aggBy;
+},
+
+agg:function(aggBy,callback,startDate,endDate,options){
+  var args = this.matchAggBy(options);
+  args.push({$match:{time:{$gt:startDate.toISOString(),$lt:endDate.toISOString()}}});
+  args.push({ $group:{ _id:aggBy, avgTime:{$avg:"$timeElapsed"}}}); 
+  debugger;
+  logCollection.aggregate(args,{allowDisUser:true},function(err,result){
+  debugger;
      if(err) return callback(err,null);
      callback(null,result);
    })
 },
    
-aggRequest:function(callback,startDate,endDate,searchId,searchType){
-    this.agg("$request",callback,startDate,endDate,searchId,searchType);
+aggRequest:function(callback,startDate,endDate,options){
+    this.agg("$request",callback,startDate,endDate,options);
 },
 
-list:function(callback,startDate,endDate,searchId,searchType){
+list:function(callback,startDate,endDate,options){
+  var time = {time:{$gt:startDate.toISOString(),$lt:endDate.toISOString()}};
+  var args = [];
+  if(options){
+  for(var i=0;i<options.length;i++){
+    if('requestId'===options[i].key){
+      args.push({request: options[i].val});
+    }
+    else if('host'===options[i].key){
+      args.push({hostname: options[i].val});
+    }
+    else if('api'===options[i].key){
+      args.push({api: options[i].val});
+    }
+    else if('func'===options[i].key){
+      args.push({func: options[i].val});
+    }
+  }
+  args.push(time);
+  args = {$and:args};
+  }else{
+    args = time;
+  }
   debugger;
-  var findBy = {time:{$gt:startDate.toISOString(),$lt:endDate.toISOString()}};
-  if(searchType && searchId){
-  if('requestId'===searchType){
-    findBy = {
-      $and : [
-        findBy,
-	{request: searchId}
-      ]
-    }
-  }
-  else if('host'===searchType){
-    findBy = {
-      $and : [
-        findBy,
-	{hostname: searchId}
-      ]
-    }
-  }
-  else if('api'===searchType){
-    findBy = {
-      $and : [
-        findBy,
-	{api: searchId}
-      ]
-    }
-  }
-  else if('func'===searchType){
-    findBy = {
-      $and : [
-        findBy,
-	{func: searchId}
-      ]
-    }
-  }
-  }
-  logCollection.find(findBy).sort({_id:1}).toArray(function(err,result){
+  logCollection.find(args).toArray(function(err,result){
     debugger;
     if(err) return callback(err,null);
     callback(null,result);
   });
 },
 
-aggHost:function(callback,startDate,endDate,searchId,searchType){
-  this.agg("$hostname",callback,startDate,endDate,searchId,searchType);
+aggHost:function(callback,startDate,endDate,options){
+  this.agg("$hostname",callback,startDate,endDate,options);
 },
 
-aggApi:function(callback,startDate,endDate,searchId,searchType){
-  this.agg("$api",callback,startDate,endDate,searchId,searchType);
+aggApi:function(callback,startDate,endDate,options){
+  this.agg("$api",callback,startDate,endDate,options);
 },
 
-aggFunc:function(callback,startDate,endDate,searchId,searchType){
-  this.agg("$func",callback,startDate,endDate,searchId,searchType);
+aggFunc:function(callback,startDate,endDate,options){
+  this.agg("$func",callback,startDate,endDate,options);
 }
 
 

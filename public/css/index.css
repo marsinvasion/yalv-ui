@@ -1,6 +1,6 @@
 body {
   min-height: 2000px;
-  padding-top: 70px;
+  padding-top: 150px;
 }
     
 .height400 {
@@ -20,4 +20,7 @@ body {
 }
 .ui-widget-content {
   z-index:1200 !important
+}
+.breadcrumb{
+  margin-bottom:0px; !important
 }
