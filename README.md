@@ -4,6 +4,14 @@
 
 ## Log Viewer
 
+- Clone project
+
+- Install dependencies
+
+```
+npm install
+```
+
 - Load your application logs by [YALV](https://github.com/marsinvasion/yalv)
 
 - Start yalv-ui
