@@ -15,13 +15,13 @@ router.get('/', function(req, res, next) {
 router.post('/', function(req, res, next) {
   var s;
   if(req.body.startDate){
-    s = new Date(req.body.startDate);
+    s = new Date(req.body.startDate +' UTC');
   }else{
     s = new Date();
     s.setDate(s.getDate()-2);
   }
   var e;
-  if(req.body.endDate) e = new Date(req.body.endDate);
+  if(req.body.endDate) e = new Date(req.body.endDate+ ' UTC');
   else e = new Date();
   getResult(res,s,e,postCallback,req.body.options);
 });

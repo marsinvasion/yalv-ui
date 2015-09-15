@@ -107,10 +107,10 @@ var barChart = function(svgDiv, data, xLabel){
 var multiChart = function(svgDiv, data){
   $(svgDiv).empty()
   if(data && data.length>0){
-  var svg = dimple.newSvg(svgDiv, 1200, 600);
+  var svg = dimple.newSvg(svgDiv, 1200, 700);
   var chart = new dimple.chart(svg, data);
-  chart.setBounds(60,20,1000,400);
-  var x = chart.addTimeAxis("x", "time");
+  chart.setBounds(60,20,1000,500);
+  var x = chart.addTimeAxis("x", "time","%Y-%m-%dT%H:%M:%S.%LZ");
   chart.addMeasureAxis("y", "timeElapsed");
   var y2 = chart.addMeasureAxis("y", "memoryUsed");
   var bars = chart.addSeries(["request","api","func","time","hostname","freeMemory","memoryUsed","loadAverage","uptime"], dimple.plot.bar);
