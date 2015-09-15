@@ -13,13 +13,13 @@
     <form id="navForm" role="search" class="form-inline navbar-form">
       <div class="row">
       <div class='form-group input-group date' id='startDate'>
-        <input type='text' class="form-control" name="start" />
+        <input type='text' class="form-control" name="start" placeholder="UTC Time"/>
         <span class="input-group-addon">
           <span class="glyphicon glyphicon-calendar"></span>
         </span>
       </div>
       <div class='form-group input-group date' id='endDate'>
-        <input type='text' class="form-control" name="end"/>
+        <input type='text' class="form-control" name="end" placeholder="UTC Time"/>
         <span class="input-group-addon">
           <span class="glyphicon glyphicon-calendar"></span>
         </span>
@@ -107,9 +107,9 @@ var barChart = function(svgDiv, data, xLabel){
 var multiChart = function(svgDiv, data){
   $(svgDiv).empty()
   if(data && data.length>0){
-  var svg = dimple.newSvg(svgDiv, 1200, 700);
+  var svg = dimple.newSvg(svgDiv, 1200, 800);
   var chart = new dimple.chart(svg, data);
-  chart.setBounds(60,20,1000,500);
+  chart.setBounds(60,50,1000,600);
   var x = chart.addTimeAxis("x", "time","%Y-%m-%dT%H:%M:%S.%LZ");
   chart.addMeasureAxis("y", "timeElapsed");
   var y2 = chart.addMeasureAxis("y", "memoryUsed");
