@@ -18,7 +18,7 @@ router.post('/', function(req, res, next) {
     s = new Date(req.body.startDate +' UTC');
   }else{
     s = new Date();
-    s.setDate(s.getDate()-2);
+    s.setDate(s.getDate()-1);
   }
   var e;
   if(req.body.endDate) e = new Date(req.body.endDate+ ' UTC');
