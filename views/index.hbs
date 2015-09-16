@@ -112,7 +112,7 @@ var multiChart = function(svgDiv, data){
   chart.setBounds(60,100,1000,500);
   var x = chart.addTimeAxis("x", "time","%Y-%m-%dT%H:%M:%S.%LZ");
   chart.addMeasureAxis("y", "timeElapsed");
-  var bars = chart.addSeries(["timeElapsed","request","api","func","time","hostname","freeMemory","memoryUsed","loadAverage","uptime"], dimple.plot.bubble);
+  var bars = chart.addSeries(["request","api","func","time","hostname","freeMemory","memoryUsed","loadAverage","uptime"], dimple.plot.bubble);
   chart.draw();
   }else{
     $(svgDiv).append('<h4> No Data Available </h4>');
