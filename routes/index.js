@@ -7,7 +7,7 @@ var async = require('async');
 /* GET home page. */
 router.get('/', function(req, res, next) {
   var startDate = new Date();
-  startDate.setDate(startDate.getDate()-2);
+  startDate.setDate(startDate.getDate()-1);
   var endDate = new Date();
   getResult(res,startDate,endDate,getCallback,null);
 });
