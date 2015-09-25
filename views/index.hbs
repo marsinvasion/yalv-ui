@@ -91,7 +91,8 @@
 var barChart = function(svgDiv, data, xLabel){
   $(svgDiv).empty()
   if(data && data.length>0){
-  var svg = dimple.newSvg(svgDiv, 550, 500);
+  var svg = dimple.newSvg(svgDiv);
+  svg.attr("width", "100%").attr("height","500px");
   var chart = new dimple.chart(svg, data);
   chart.setBounds(60,20,500,250);
   var x = chart.addCategoryAxis("x", "_id");
@@ -107,7 +108,8 @@ var barChart = function(svgDiv, data, xLabel){
 var multiChart = function(svgDiv, data){
   $(svgDiv).empty()
   if(data && data.length>0){
-  var svg = dimple.newSvg(svgDiv, 1200, 800);
+  var svg = dimple.newSvg(svgDiv);
+  svg.attr("width", "100%").attr("height","800px");
   var chart = new dimple.chart(svg, data);
   chart.setBounds(60,100,1000,500);
   var x = chart.addTimeAxis("x", "time","%Y-%m-%dT%H:%M:%S.%LZ");
