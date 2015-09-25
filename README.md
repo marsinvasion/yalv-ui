@@ -44,5 +44,5 @@ None
 
 [MIT](LICENSE)
 
-Copyright (c) 2015 Anoop Kulkarni (http://anoopkulkarni.com)
+Anoop Kulkarni (http://anoopkulkarni.com, https://tweetcareers.com,  https://newsp.in)
 
